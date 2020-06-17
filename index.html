@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>游戏展示中心</title>
+		<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" />
+		<style type="text/css">
+			[v-cloak] {
+				display: none
+			}
+
+			.my-header {
+				position: fixed;
+				width: 100%;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
+
+			.case-box>a {
+				color: #337ab7;
+			}
+
+			.case-box>a>img {
+				height: 9.375rem;
+				min-height: 150px;
+				max-width: 100%;
+				border-radius: 0.9375rem;
+			}
+
+			.case-box>a>h3 {
+				font-size: 1.5rem;
+				margin-top: 1.25rem;
+				margin-bottom: 0.625rem;
+			}
+
+			.case-item {
+				margin-bottom: 3.5rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<main id="app" v-cloak>
+			<section class="container-fluid">
+				<template v-for="item in caseList">
+					<div :id="item.type" class="case-item">
+						<div :class="['text-center p-1', item.type]">
+							<h1><a :disabled="item.disabled" :href="'#' + item.type"># {{ item.name }}</a></h1>
+						</div>
+						<hr />
+						<div class="row">
+							<template v-for="citem in item.list">
+								<div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center case-box">
+									<a target="_blank" :href="citem.url">
+										<img :src="citem.imgSrc" />
+										<h3>{{ citem.name | checkText }}</h3>
+										<samp>{{ citem.samp | checkText }}</samp>
+										<p v-if="citem.desc" style="color: red;">{{ citem.desc | checkText }}</p>
+									</a>
+								</div>
+							</template>
+						</div>
+					</div>
+				</template>
+			</section>
+
+			<footer style="height: 300px;"></footer>
+		</main>
+
+		<script src="//cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script src="//cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: "#app",
+				filters: {
+					checkText: function(value) {
+						return value ? value : ""
+					}
+				},
+				data: function() {
+					return {
+						caseList: [{
+							name: "Puzzle",
+							type: "Puzzle",
+							list: [{
+								name: "跳房子",
+								imgSrc: "//pic.downk.cc/item/5ee9e832a240b370e30db594.jpg",
+								url: "./puzzle/1/index.html",
+								samp: "2020-06-17 18:12:40"
+							}]
+						}]
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>
