@@ -2,27 +2,121 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>【跳房子】 puzzle游戏</title>
-		<link rel="stylesheet" type="text/css" href="style.css"/>
-		<link rel="shortcut icon" href="build/img/azil-orange-ico.png">
+		<title>跳房子游戏</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="shortcut icon" href="../../build/img/azil-orange-ico.png">
+		<link href="//cdn.bootcdn.net/ajax/libs/driver.js/0.9.8/driver.min.css" rel="stylesheet">
+		<script src="//cdn.bootcdn.net/ajax/libs/driver.js/0.9.8/driver.min.js"></script>
 	</head>
 	<body>
 		<main id="app" class="main">
-			<div style="position: fixed; left: 20px; top: 20px;z-index: 1;">
+			<div style="position: fixed; left: 50px; top: 40px;z-index: 1;">
 				<h1>游戏规则：</h1>
-				<h2>1. 第一步任意拿掉一个棋子</h2>
-				<h2>2. 往后拿掉棋子时都需要隔一个还存在的棋子往空位跳（选中一个棋子再点击你想跳的位置）</h2>
-				<h2>3. 直到最后只剩一颗棋子则获胜</h2>
-				<a href="./GIF.gif" target="_blank">
-					<button>演 示</button>
-				</a>
+				<h2>直到最后只剩一颗棋子则获胜</h2>
+				<br>
+				<br>
+				<h3>玩法介绍：</h3>
+				<a href="https://www.bilibili.com/video/BV1op4y1S7ZP" target="_blank">GM的秘密基地</a>
+				<small>游戏也是看到视频做的😃</small>
+				<br>
+				<br>
+				<button type="button" class="btn btn-1" id="demo-btn"><span>演 示</span></button>
+				<button type="button" class="btn btn-2" onclick="startGame()"><span>重新开始</span></button>
 			</div>
 			<div class="warp">
 				<div id="game" class="game"></div>
 			</div>
-			<div id="time"></div>
+			<div id="time" style="position: fixed;top: 40px;right: 0px;font-size: 30px;width: 300px;"></div>
 		</main>
-		
+
 		<script src="app.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			const $ = (el) => {
+				return document.querySelector(el)
+			}
+			const stepId = '#game-chess-'
+			const stepArr = [{
+					element: `${stepId}2-1`,
+					popover: {
+						title: "步骤1",
+						description: "开局可以点开任意一个棋子"
+					}
+				},
+				{
+					element: `${stepId}4-3`,
+					popover: {
+						title: "步骤2",
+						description: "然后点击同一条线上的并且中间空一个位置的没打开的棋子"
+					}
+				},
+				{
+					element: `${stepId}2-1`,
+					popover: {
+						title: "步骤3",
+						description: "再次点击2-1棋子，就能得到2个打开的棋子了"
+					}
+				},
+				{
+					element: `${stepId}4-1`,
+					popover: {
+						title: "再来一次",
+						description: "点击4-1棋子"
+					}
+				},
+				{
+					element: `${stepId}4-3`,
+					popover: {
+						title: "步骤5",
+						description: "然后点击4-3棋子"
+					}
+				},
+				{
+					element: `#game`,
+					popover: {
+						title: "此时就打开了3个棋子了。你学废了吗！来吧，展示",
+						description: `<button type="button" onclick="startGame()"><span>开始游戏</span></button>`
+					}
+				}
+			]
+			window.driver = new Driver({
+				allowClose: false, //禁止点击外部关闭
+				showButtons: false,
+				keyboardControl: false,
+				stageBackground: '#fff', // 引导对话的背景色
+			})
+			const btn = document.querySelector("#demo-btn")
+			btn.onclick = function() {
+				startGame()
+				driver.defineSteps(stepArr)
+				driver.start()
+			}
+
+			let game
+			window.startGame = function() {
+				game?.reset()
+				driver?.reset()
+				const $time = $('#time')
+				$time.innerHTML = `点击棋子开始计时`
+				game = new Game({
+					el: '#game',
+					timeCallback(ms) {
+						$time.innerHTML = `耗时<small>(秒)</small>：${ms/1000}`
+					},
+					success({ms, steps}) {
+						alert(`恭喜你完成游戏,耗时 ${ms} 毫秒,一共走了 ${steps.length} 步`)
+						const iframeEl = document.createElement('iframe')
+						iframeEl.src = "../../fireworks/index.html"
+						iframeEl.setAttribute('frameborder', 0)
+						document.body.appendChild(iframeEl)
+					}
+				})
+				game.paint()
+			}
+
+			document.addEventListener('DOMContentLoaded', () => {
+				startGame()
+			})
+		</script>
 	</body>
 </html>

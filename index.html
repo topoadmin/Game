@@ -48,7 +48,7 @@
 	<body>
 		<main id="app" v-cloak>
 			<section class="container-fluid">
-				<template v-for="item in caseList">
+				<template v-for="(item, index) in caseList" :key="index">
 					<div :id="item.type" class="case-item">
 						<div :class="['text-center p-1', item.type]">
 							<h1><a :disabled="item.disabled" :href="'#' + item.type"># {{ item.name }}</a></h1>
@@ -90,9 +90,9 @@
 							type: "Puzzle",
 							list: [{
 								name: "跳房子",
-								imgSrc: "//pic.downk.cc/item/5ee9e832a240b370e30db594.jpg",
+								imgSrc: "//pic.imgdb.cn/item/5ee9e832a240b370e30db594.jpg",
 								url: "./puzzle/1/index.html",
-								samp: "2020-06-17 18:12:40"
+								samp: "2022年1月22日 17:11:27"
 							}]
 						}]
 					}
