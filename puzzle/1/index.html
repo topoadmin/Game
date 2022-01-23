@@ -103,6 +103,11 @@
 					timeCallback(ms) {
 						$time.innerHTML = `耗时<small>(秒)</small>：${ms/1000}`
 					},
+					stepSuccess() {
+						if (driver.isActivated) {
+							driver.moveNext()
+						}
+					},
 					success({ms, steps}) {
 						alert(`恭喜你完成游戏,耗时 ${ms} 毫秒,一共走了 ${steps.length} 步`)
 						const iframeEl = document.createElement('iframe')

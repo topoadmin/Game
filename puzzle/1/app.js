@@ -1,5 +1,5 @@
 ;
-(function() {
+(function () {
 	'use stric'
 	const doc = window.document
 	const $ = (el, method = false) => {
@@ -25,17 +25,13 @@
 			this.el.innerHTML = ""
 			this.__ms = 0
 			this.__paintInit = true
-			const chessboard = Array.from({
-				length: this.opt.chessboard
-			}).map((row, index) => {
+			const chessboard = Array.from({length: this.opt.chessboard}).map((row, index) => {
 				index = index + 1
 				const rowEl = doc.createElement('div')
 				rowEl.className = 'game-row'
 				this.el.appendChild(rowEl)
 
-				return Array.from({
-					length: index
-				}).map((child, cindex) => {
+				return Array.from({length: index}).map((child, cindex) => {
 					const colEl = doc.createElement('div')
 					colEl.className = 'game-col'
 					rowEl.appendChild(colEl)
@@ -59,11 +55,6 @@
 			this.chessboard = chessboard
 		}
 		step(chess, el) { // 开始跳子，选中的子朝着空位跳，中间必须隔着一个存在的子
-			/* 步骤代码start */
-			if (driver.isActivated) {
-				driver.moveNext()
-			}
-			/* 步骤代码end */
 			if (this.__paintInit) { // 第一步随便点
 				el.classList.add('game-chess__close')
 				this.time()
@@ -118,6 +109,7 @@
 				}
 			} else {
 				clearFoucs()
+				this.recordStep(chess)
 			}
 		}
 		toStep() { // 计算目标位置是否符合放置规则
