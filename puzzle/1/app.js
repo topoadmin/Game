@@ -92,14 +92,13 @@
 						node.el.classList.add('game-chess__close')
 						this.__chessA = false
 
-						// TODO: 每移动一步就判断是否成功完成游戏
+						// 每移动一步就判断是否成功完成游戏
 						if (this.isSucessGame()) {
-							window.clearTimeout(__clearTIme)
-							Object.prototype.toString.call(this.opt.success) === '[object Function]' && this.opt
-								.success({
-									ms: this.__ms,
-									steps: this.__recordSteps
-								})
+							window.clearTimeout(this.__clearTIme)
+							Object.prototype.toString.call(this.opt.success) === '[object Function]' && this.opt.success({
+								ms: this.__ms,
+								steps: this.__recordSteps
+							})
 						}
 					} else {
 						clearFoucs()
@@ -153,15 +152,13 @@
 				a: a.position,
 				z: (z && z.position) ? z.position : undefined
 			})
-			Object.prototype.toString.call(this.opt.stepSuccess) === '[object Function]' && this.opt
-				.stepSuccess(this.__recordSteps)
+			Object.prototype.toString.call(this.opt.stepSuccess) === '[object Function]' && this.opt.stepSuccess(this.__recordSteps)
 			console.info('记录移动步骤：', this.__recordSteps)
 		}
 		time() { // 计时器
 			this.__clearTime = setTimeout(() => {
 				this.__ms = this.__ms + 60
-				Object.prototype.toString.call(this.opt.timeCallback) === '[object Function]' && this
-					.opt.timeCallback(this.__ms)
+				Object.prototype.toString.call(this.opt.timeCallback) === '[object Function]' && this.opt.timeCallback(this.__ms)
 				this.time()
 			}, 60)
 		}
