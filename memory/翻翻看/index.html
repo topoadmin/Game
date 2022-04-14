@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>记忆翻翻看</title>
+		<link rel="stylesheet" type="text/css" href="./style.css" />
+		<link rel="shortcut icon" href="../../build/img/azil-orange-ico.png">
+		<script src="//at.alicdn.com/t/font_3322468_le15gvj35l.js?spm=a313x.7781069.1998910419.52&file=font_3322468_le15gvj35l.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.icon {
+				 width: 1em;
+				 height: 1em;
+				 vertical-align: -0.15em;
+				 fill: currentColor;
+				 overflow: hidden;
+			}
+		</style>
+		<script type="text/javascript">
+			// 打乱可用棋子图案
+			const ICONS = ['xiangsu_aixin', 'xiangsu_xiaoya', 'xiangsu_biaoqing', 'xiangsu_meiguihua', 'xiangsu_tangguo',
+			'xiangsu_xianrenzhang', 'xiangsu_caomei', 'xiangsu_tuzi', 'xiangsu_qizhi', 'xiangsu_wuqi',
+			'xiangsu_xigua', 'xiangsu_jiangbei', 'xiangsu_yaoshui', 'xiangsu_fangzi', 'xiangsu_youxiji',
+			'xiangsu_jinbi', 'xiangsu_shu', 'xiangsu_mao', 'xiangsu_zuanshi', 'xiangsu_pijiu'].sort(() => Math.random() - 0.5)
+		</script>
+	</head>
+	<body>
+		<div id="game" class="game"></div>
+		<div style="text-align: center; height: 100px;">
+			<button type="button" class="btn btn-2" onclick="startGame(0)"><span>低能</span></button>
+			<button type="button" class="btn btn-2" onclick="startGame(1)"><span>正常</span></button>
+			<button type="button" class="btn btn-2" onclick="startGame(2)"><span>非正常</span></button>
+			<button type="button" class="btn btn-2" onclick="startGame(3)"><span>石乐志</span></button>
+			<button type="button" class="btn btn-1" onclick="startGame()"><span>重新开始</span></button>
+		</div>
+		<div id="time" style="font-size: 30px;width: 300px;"></div>
+		<script src="./app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			document.addEventListener('DOMContentLoaded', () => {
+				let game
+				let oldLevel = 0
+				try{
+					if (window.localStorage.getItem('level')) {
+						oldLevel = parseInt(window.localStorage.getItem('level'))
+					}
+				}catch(e){
+					console.error(e)
+				}
+				window.startGame = function(level) {
+					game && game.reset()
+					const $time = document.querySelector('#time')
+					$time.innerHTML = `点击棋子开始计时`
+					if (level >= 0) {
+						oldLevel = level
+					}
+					window.localStorage.setItem('level', oldLevel)
+					game = new Game({
+						el: '#game',
+						level: oldLevel,
+						timeCallback(ms) {
+							$time.innerHTML = `耗时<small>(秒)</small>：${ms/1000}`
+						},
+						success({ms, steps}) {
+							window.setTimeout(() => {
+								alert(`恭喜你完成游戏,耗时 ${ms} 毫秒,一共走了 ${steps.length} 步`)
+							}, 0)
+						}
+					})
+					game.paint()
+				}
+				startGame(oldLevel)
+			})
+		</script>
+	</body>
+</html>

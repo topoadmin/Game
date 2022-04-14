@@ -157,10 +157,10 @@
 		}
 		time() { // 计时器
 			this.__clearTime = setTimeout(() => {
-				this.__ms = this.__ms + 60
+				this.__ms = this.__ms + 17
 				Object.prototype.toString.call(this.opt.timeCallback) === '[object Function]' && this.opt.timeCallback(this.__ms)
 				this.time()
-			}, 60)
+			}, 17)
 		}
 		isSucessGame() { // 是否成功完成游戏
 			// 棋盘只剩一粒棋子
